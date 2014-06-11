@@ -1,30 +1,7 @@
 BASEDIR=`dirname $0`
-CURL="curl --retry 5 --silent --show-error"
-UNPACK="unzip -q -o"
 
-echo "Fetching prebuilts:"
-
-set -e
+mkdir -p $BASEDIR/proprietary
 
 # Get Android Terminal Emulator (we use a prebuilt so it can update from the Market)
-echo "* Android Terminal Emulator"
-$CURL -L -o $BASEDIR/proprietary/Term.apk -O -L "http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk"
-$UNPACK -o -d $BASEDIR/proprietary $BASEDIR/proprietary/Term.apk lib/*
-
-# Get Xposed Framework Installer (Source: http://forum.xda-developers.com/showthread.php?t=1574401)
-echo "* Xposed Framework Installer"
-$CURL -L -o $BASEDIR/proprietary/XposedInstaller.apk -O -L "http://dl.xposed.info/latest.apk"
-
-# Get Xposed module: App Settings (Source: http://repo.xposed.info/module/de.robv.android.xposed.mods.appsettings)
-echo "* Xposed module: App Settings"
-$CURL -L -o $BASEDIR/proprietary/XposedAppSettings.apk -O -L "http://dl-count.xposed.info/modules/de.robv.android.xposed.mods.appsettings_v25_563d5c.apk"
-
-# Get GooManager (Source: http://goo.im/devs/s0updev/goomanager)
-echo "* Goo Manager"
-$CURL -L -o $BASEDIR/proprietary/com.s0up.goomanager-2.apk -O -L "http://goo.im/devs/s0updev/goomanager/GooManager_2.1.3.apk"
-
-# Get FDroid FOSS Market (http://forum.xda-developers.com/showthread.php?p=34190204)
-echo "* FDroid FOSS Market"
-$CURL  -L -o $BASEDIR/proprietary/org.fdroid.fdroid-2.apk -O -L "https://f-droid.org/FDroid.apk"
-
-set +e
+curl -L -o $BASEDIR/proprietary/Term.apk -O -L http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk
+unzip -o -d $BASEDIR/proprietary $BASEDIR/proprietary/Term.apk lib/*

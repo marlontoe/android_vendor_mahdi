@@ -85,7 +85,8 @@ PRODUCT_PACKAGES += \
     KernelTweaker \
     MahdiSetupWizard \
     ScreenRecorder \
-    Trebuchet
+    Trebuchet \
+    CMHome
 
 # Mahdi control center
 ifneq ($(WITHOUT_MC),true)

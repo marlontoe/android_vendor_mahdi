@@ -8,5 +8,6 @@ PRODUCT_PACKAGES += \
     LiveWallpapersPicker \
     VisualizationWallpapers \
     PhaseBeam \
+    PhotoPhase \
     VideoEditor
 

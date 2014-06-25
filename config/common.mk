@@ -101,7 +101,12 @@ PRODUCT_PACKAGES += \
     libscreenrecorder \
     SoundRecorder \
     VoiceDialer \
-    CellBroadcastReceiver   
+    CellBroadcastReceiver
+
+# CM Hardware Abstraction Framework
+PRODUCT_PACKAGES += \
+    org.cyanogenmod.hardware \
+    org.cyanogenmod.hardware.xml
 
 # Extra tools in Mahdi
 PRODUCT_PACKAGES += \

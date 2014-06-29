@@ -82,7 +82,6 @@ PRODUCT_PACKAGES += \
     LockClock \
     VoicePlus \
     OmniSwitch \
-    KernelTweaker \
     MahdiSetupWizard \
     ScreenRecorder \
     Trebuchet \

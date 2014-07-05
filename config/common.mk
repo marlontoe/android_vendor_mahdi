@@ -81,7 +81,6 @@ PRODUCT_PACKAGES += \
     libemoji \
     LockClock \
     VoicePlus \
-    OmniSwitch \
     MahdiSetupWizard \
     ScreenRecorder \
     Trebuchet \

@@ -91,8 +91,7 @@ PRODUCT_PACKAGES += \
     MahdiSetupWizard \
     ScreenRecorder \
     Trebuchet \
-    CMHome \
-    OmniSwitch
+    CMHome
 
 # Mahdi control center
 ifneq ($(WITHOUT_MC),true)

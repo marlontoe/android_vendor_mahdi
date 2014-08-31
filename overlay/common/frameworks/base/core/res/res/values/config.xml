@@ -3,9 +3,6 @@
     <!-- Disable menu key in Lock Screen by default -->
     <bool name="config_disableMenuKeyInLockScreen">true</bool>
 
-    <!-- Component name of the default wallpaper. This will be ImageWallpaper if not specified -->
-    <string name="default_wallpaper_component" translatable="false">com.android.phasebeam/.PhaseBeamWallpaper</string>
-
     <string-array name="config_locationProviderPackageNames" translatable="false">
 	<!-- The Google provider -->
         <item>com.google.android.gms</item>

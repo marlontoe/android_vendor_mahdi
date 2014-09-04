@@ -60,6 +60,12 @@ PRODUCT_COPY_FILES += \
     vendor/mahdi/prebuilt/common/bin/compcache:system/bin/compcache \
     vendor/mahdi/prebuilt/common/bin/handle_compcache:system/bin/handle_compcache
 
+# frandom support
+PRODUCT_COPY_FILES += \
+    vendor/mahdi/prebuilt/common/lib/modules/frandom.ko:system/lib/modules/frandom.ko \
+    vendor/mahdi/prebuilt/common/etc/init.d/22frandom:system/etc/init.d/22frandom \
+    vendor/mahdi/prebuilt/common/xbin/ftest:system/xbin/ftest
+
 # Enable SIP+VoIP on all targets
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml

@@ -1,0 +1,8 @@
+#!/system/bin/sh
+
+# MOUNT_PARTITIONS RW
+busybox mount -o remount rw /system
+
+### ENSURE_CORRECT_INIT.D_PERMISSIONS
+busybox chmod -R 0755 /system/etc/init.d
+busybox chown 0:2000 /system/etc/init.d/*

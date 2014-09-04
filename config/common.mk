@@ -58,7 +58,8 @@ PRODUCT_COPY_FILES += \
 # Compcache/Zram support
 PRODUCT_COPY_FILES += \
     vendor/mahdi/prebuilt/common/bin/compcache:system/bin/compcache \
-    vendor/mahdi/prebuilt/common/bin/handle_compcache:system/bin/handle_compcache
+    vendor/mahdi/prebuilt/common/bin/handle_compcache:system/bin/handle_compcache \
+    vendor/mahdi/prebuilt/common/etc/init.d/23zram:system/etc/init.d/23zram
 
 # frandom support
 PRODUCT_COPY_FILES += \

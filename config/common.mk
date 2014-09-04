@@ -69,8 +69,8 @@ PRODUCT_COPY_FILES += \
 
 # some basic init.d scripts
 PRODUCT_COPY_FILES += \
-    vendor/mahdi/prebuilt/common/etc/init.d/00init:system/etc/init.d/00init \
-    vendor/mahdi/prebuilt/common/etc/init.d/01sysctl:system/etc/init.d/01sysctl
+    vendor/mahdi/prebuilt/common/etc/init.d/01init:system/etc/init.d/01init \
+    vendor/mahdi/prebuilt/common/etc/init.d/02sysctl:system/etc/init.d/02sysctl
 
 # Enable SIP+VoIP on all targets
 PRODUCT_COPY_FILES += \

@@ -1,35 +1,48 @@
 #!/system/bin/sh
 
 ### INSMOD ZRAM-MODULE ON BOOT
-insmod /system/lib/modules/zram.ko;
-sleep 2
+if busybox [ -f /system/lib/modules/zram.ko ]; then
+    if busybox [ -z "`busybox lsmod | busybox grep zram`" ]; then
+        busybox insmod /system/lib/modules/zram.ko;
+    fi;
+    busybox modprobe zram zram_num_devices=2;
+fi; sleep 2
 
-### CREATE ZRAM SWAP DEVICES
-swapoff /dev/block/zram1;
-swapoff /dev/block/zram2;
-swapoff /dev/block/zram3;
-swapoff /dev/block/zram0;
+### GET TOTAL AMOUNT OF
+### PHYSICAL MEMORY
+mem_total_kb=$(grep MemTotal /proc/meminfo | grep -E --only-matching '[[:digit:]]+')
 
-echo 1 > /sys/block/zram1/reset;
-echo 33554432 > /sys/block/zram1/disksize;
-mkswap /dev/block/zram1;
+### ASSIGN 50% OF SYSTEM MEMORY
+mem_total_kb=$((mem_total_kb * 1024 / 2))
 
-echo 1 > /sys/block/zram2/reset;
-echo 33554432 > /sys/block/zram2/disksize;
-mkswap /dev/block/zram2;
+### CREATE ZRAM0
+if busybox [ "`busybox grep zram0 /proc/swaps`" != "" ]; then
+            busybox swapoff /dev/block/zram0;
+        fi;
 
-echo 1 > /sys/block/zram3/reset;
-echo 33554432 > /sys/block/zram3/disksize;
-mkswap /dev/block/zram3;
+busybox echo 1 > /sys/block/zram0/reset;
+if [ ! -f /sys/block/zram0/comp_algorithm ]; then
+          echo "Warning: cannot use LZ4 compression, defaulting to LZO (slower!)"
+        else
+          echo -n lz4 > /sys/block/zram0/comp_algorithm;
+        fi; sleep 1
+busybox echo $((mem_total_kb / 2)) > /sys/block/zram0/disksize;
+busybox mkswap /dev/block/zram0;
+busybox swapon -p 32767 /dev/block/zram0;
 
-echo 1 > /sys/block/zram0/reset;
-echo 33554432 > /sys/block/zram0/disksize;
-mkswap /dev/block/zram0;
+### CREATE ZRAM1
+if busybox [ "`busybox grep zram1 /proc/swaps`" != "" ]; then
+            busybox swapoff /dev/block/zram1;
+        fi;
 
-busybox swapon -p 100 /dev/block/zram0;
-busybox swapon -p 100 /dev/block/zram3;
-busybox swapon -p 100 /dev/block/zram2;
-busybox swapon -p 100 /dev/block/zram1;
+busybox echo 1 > /sys/block/zram1/reset;
+if [ ! -f /sys/block/zram1/comp_algorithm ]; then
+          echo "Warning: cannot use LZ4 compression, defaulting to LZO (slower!)"
+        else
+          echo -n lz4 > /sys/block/zram1/comp_algorithm;
+        fi; sleep 1
+busybox echo $((mem_total_kb / 2)) > /sys/block/zram1/disksize;
+busybox mkswap /dev/block/zram1;
+busybox swapon -p 32767 /dev/block/zram1;
 
-echo 70 > /proc/sys/vm/swappiness;
 exit

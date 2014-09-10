@@ -168,11 +168,10 @@ endif
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.root_access=3
 
-# easy way to extend to add more packages
--include vendor/extra/product.mk
-
 PRODUCT_PACKAGE_OVERLAYS += vendor/mahdi/overlay/common
 PRODUCT_PACKAGE_OVERLAYS += vendor/mahdi/overlay/dictionaries
 
 # Inherit common product build prop overrides
 -include vendor/mahdi/config/common_versions.mk
+
+$(call inherit-product-if-exists, vendor/extra/product.mk)

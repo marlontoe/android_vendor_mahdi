@@ -87,7 +87,6 @@ PRODUCT_PACKAGES += \
     DSPManager \
     libemoji \
     LockClock \
-    VoicePlus \
     MahdiSetupWizard \
     ScreenRecorder \
     Trebuchet \

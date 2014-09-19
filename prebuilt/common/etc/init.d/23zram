@@ -1,48 +1,44 @@
 #!/system/bin/sh
 
+BBOX="/system/xbin/busybox"
+NUMCPUS=`grep -c ^processor /proc/cpuinfo`
+### ASSUME DUAL CORE IF WE GET ANY ERRORS
+[ "$NUMCPUS" != 0 ] || NUMCPUS=2
+### DECREMENTED NUMCUPS
+DECR_NUMCPUS=$(($NUMCPUS - 1))
+### CALCULATE ZRAMSIZE
+RAMSIZE=$(grep MemTotal /proc/meminfo | grep -E --only-matching '[[:digit:]]+')
+ZRAMSIZE=$(($RAMSIZE * 1024 / 2))
+
 ### INSMOD ZRAM-MODULE ON BOOT
-if busybox [ -f /system/lib/modules/zram.ko ]; then
-    if busybox [ -z "`busybox lsmod | busybox grep zram`" ]; then
-        busybox insmod /system/lib/modules/zram.ko;
+if $BBOX [ -f /system/lib/modules/zram.ko ]; then
+    if $BBOX [ -z "`$BBOX lsmod | $BBOX grep zram`" ]; then
+        $BBOX insmod /system/lib/modules/zram.ko;
     fi;
-    busybox modprobe zram zram_num_devices=2;
-fi; sleep 2
+    $BBOX modprobe zram zram_num_devices=$NUMCUPS;
+fi; sleep 1
 
-### GET TOTAL AMOUNT OF
-### PHYSICAL MEMORY
-mem_total_kb=$(grep MemTotal /proc/meminfo | grep -E --only-matching '[[:digit:]]+')
 
-### ASSIGN 50% OF SYSTEM MEMORY
-mem_total_kb=$((mem_total_kb * 1024 / 2))
+### CREATE ZRAM DEVICE(S)
+for i in $(seq 0 $DECR_NUMCPUS); do
+        if [ "$(grep /dev/block/zram$i /proc/swaps)" != "" ]; then
+		$BBOX echo 1 > /sys/block/zram$i/reset;
+sleep 1
+fi; 	done;
 
-### CREATE ZRAM0
-if busybox [ "`busybox grep zram0 /proc/swaps`" != "" ]; then
-            busybox swapoff /dev/block/zram0;
-        fi;
-
-busybox echo 1 > /sys/block/zram0/reset;
-if [ ! -f /sys/block/zram0/comp_algorithm ]; then
-          echo "Warning: cannot use LZ4 compression, defaulting to LZO (slower!)"
+for i in $(seq 0 $DECR_NUMCPUS); do
+		$BBOX echo $ZRAMSIZE > /sys/block/zram$i/disksize;
+	done;
+for i in $(seq 0 $DECR_NUMCPUS); do
+	if [ ! -f /sys/block/zram0/comp_algorithm ]; then
+          	echo "Warning: cannot use LZ4 compression, defaulting to LZO (slower!)"
         else
-          echo -n lz4 > /sys/block/zram0/comp_algorithm;
-        fi; sleep 1
-busybox echo $((mem_total_kb / 2)) > /sys/block/zram0/disksize;
-busybox mkswap /dev/block/zram0;
-busybox swapon -p 32767 /dev/block/zram0;
-
-### CREATE ZRAM1
-if busybox [ "`busybox grep zram1 /proc/swaps`" != "" ]; then
-            busybox swapoff /dev/block/zram1;
-        fi;
-
-busybox echo 1 > /sys/block/zram1/reset;
-if [ ! -f /sys/block/zram1/comp_algorithm ]; then
-          echo "Warning: cannot use LZ4 compression, defaulting to LZO (slower!)"
-        else
-          echo -n lz4 > /sys/block/zram1/comp_algorithm;
-        fi; sleep 1
-busybox echo $((mem_total_kb / 2)) > /sys/block/zram1/disksize;
-busybox mkswap /dev/block/zram1;
-busybox swapon -p 32767 /dev/block/zram1;
-
+         	$BBOX echo -n lz4 > /sys/block/zram0/comp_algorithm;
+	fi; done;
+for i in $(seq 0 $DECR_NUMCPUS); do
+		$BBOX mkswap /dev/block/zram$i;
+	done;
+for i in $(seq 0 $DECR_NUMCPUS); do
+		$BBOX swapon -p 100 /dev/block/zram$i;
+        done; sleep 3
 exit

@@ -1,0 +1,11 @@
+#!/system/bin/sh
+
+echo "deactivating zram swap devices..." 
+if busybox [ "`busybox grep zram0 /proc/swaps`" != "" ]; then
+            busybox swapoff /dev/block/zram0;
+        fi;
+sleep 1
+if busybox [ "`busybox grep zram1 /proc/swaps`" != "" ]; then
+            busybox swapoff /dev/block/zram1;
+        fi;
+echo "DONE!"

@@ -1,0 +1,15 @@
+#!/system/bin/sh
+
+### CREATE ZRAM0
+if busybox [ "`busybox grep zram0 /proc/swaps`" != "" ]; then
+            busybox swapoff /dev/block/zram0;
+        fi; sleep 1
+busybox swapon -p 100 /dev/block/zram0;
+
+### CREATE ZRAM1
+if busybox [ "`busybox grep zram1 /proc/swaps`" != "" ]; then
+            busybox swapoff /dev/block/zram1;
+        fi; sleep 1
+busybox swapon -p 100 /dev/block/zram1;
+
+exit

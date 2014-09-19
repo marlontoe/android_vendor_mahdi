@@ -59,7 +59,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/mahdi/prebuilt/common/bin/compcache:system/bin/compcache \
     vendor/mahdi/prebuilt/common/bin/handle_compcache:system/bin/handle_compcache \
-    vendor/mahdi/prebuilt/common/etc/init.d/23zram:system/etc/init.d/23zram
+    vendor/mahdi/prebuilt/common/etc/init.d/23zram:system/etc/init.d/23zram \
+    vendor/mahdi/prebuilt/common/xbin/zon:system/xbin/zon \
+    vendor/mahdi/prebuilt/common/xbin/zoff:system/xbin/zoff
 
 # frandom support
 PRODUCT_COPY_FILES += \

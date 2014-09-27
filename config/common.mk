@@ -15,10 +15,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.wifi-watchlist=GoogleGuest \
     ro.setupwizard.enterprise_mode=1 \
     ro.com.android.dateformat=MM-dd-yyyy \
-    ro.com.android.dataroaming=false
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.build.selinux=1
+    ro.com.android.dataroaming=false \
+    ro.build.selinux=1 \
+    persist.sys.root_access=3
 
 # Disable multithreaded dexopt by default
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -72,7 +71,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/mahdi/prebuilt/common/lib/libjni_latinime.so:system/lib/libjni_latinime.so
 
-# T-Mobile theme engine
+# Theme engine
 include vendor/mahdi/config/themes_common.mk
 
 # Required Mahdi packages
@@ -87,16 +86,11 @@ PRODUCT_PACKAGES += \
     DSPManager \
     libemoji \
     LockClock \
+    MahdiCenter \
     MahdiSetupWizard \
     ScreenRecorder \
     Trebuchet \
     CMHome
-
-# Mahdi control center
-ifneq ($(WITHOUT_MC),true)
-PRODUCT_PACKAGES += \
-    MahdiCenter
-endif 
 
 # Stock AOSP packages
 PRODUCT_PACKAGES += \
@@ -106,6 +100,11 @@ PRODUCT_PACKAGES += \
     SoundRecorder \
     VoiceDialer \
     CellBroadcastReceiver
+
+# Terminal Emulator
+PRODUCT_COPY_FILES += \
+    vendor/mahdi/proprietary/Term.apk:system/app/Term.apk \
+    vendor/mahdi/proprietary/lib/armeabi/libjackpal-androidterm4.so:system/lib/libjackpal-androidterm4.so
 
 # CM Hardware Abstraction Framework
 PRODUCT_PACKAGES += \
@@ -120,7 +119,6 @@ PRODUCT_PACKAGES += \
     e2fsck \
     mke2fs \
     tune2fs \
-    bash \
     vim \
     nano \
     htop \
@@ -133,7 +131,12 @@ PRODUCT_PACKAGES += \
     fsck.f2fs \
     fibmap.f2fs \
     ntfsfix \
-    ntfs-3g
+    ntfs-3g \
+    rsync \
+    procmem \
+    procrank \
+    Superuser \
+    su
 
 # Openssh
 PRODUCT_PACKAGES += \
@@ -144,29 +147,6 @@ PRODUCT_PACKAGES += \
     sshd_config \
     ssh-keygen \
     start-ssh
-
-# rsync
-PRODUCT_PACKAGES += \
-    rsync
-
-PRODUCT_PACKAGES += \
-    procmem \
-    procrank \
-    Superuser \
-    su
-
-# Allow to skip prebuilt apps
-ifneq ($(WITHOUT_PROP_APPS),true)
-
-# Terminal Emulator
-PRODUCT_COPY_FILES += \
-    vendor/mahdi/proprietary/Term.apk:system/app/Term.apk \
-    vendor/mahdi/proprietary/lib/armeabi/libjackpal-androidterm4.so:system/lib/libjackpal-androidterm4.so
-
-endif
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.root_access=3
 
 PRODUCT_PACKAGE_OVERLAYS += vendor/mahdi/overlay/common
 PRODUCT_PACKAGE_OVERLAYS += vendor/mahdi/overlay/dictionaries

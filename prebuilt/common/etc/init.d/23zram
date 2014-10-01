@@ -8,7 +8,7 @@ NUMCPUS=`grep -c ^processor /proc/cpuinfo`
 DECR_NUMCPUS=$(($NUMCPUS - 1))
 ### CALCULATE ZRAMSIZE
 RAMSIZE=$(grep MemTotal /proc/meminfo | grep -E --only-matching '[[:digit:]]+')
-ZRAMSIZE=$(($RAMSIZE * 1024 / 2))
+ZRAMSIZE=$(($RAMSIZE * 1024 / 4))
 
 echo "creating: zram device(s)=$NUMCPUS | size (per device)=$ZRAMSIZE" >> "$LOG"
 

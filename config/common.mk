@@ -86,7 +86,6 @@ PRODUCT_PACKAGES += \
     DSPManager \
     libemoji \
     LockClock \
-    MahdiCenter \
     MahdiSetupWizard \
     ScreenRecorder \
     Trebuchet \
